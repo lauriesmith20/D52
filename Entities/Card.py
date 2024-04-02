@@ -1,10 +1,9 @@
-import CustomErrors as E
+from CustomErrors import CustomErrors as E
 
-class BaseCardEntity(object):
+class BaseCard(object):
 
-    def __init__(self, suit, value):
+    def __init__(self, suit):
         self.suit = suit
-        self.value = value
         self.health = 2
         self.flipped = False
 
@@ -15,7 +14,7 @@ class BaseCardEntity(object):
             raise E.CardAlreadyFlipped(self)
 
 
-    def attack(self, defender: BaseCardEntity):
+    def attack(self, defender):
         if self.flipped:
             defender.get_attacked(self)
         else:
