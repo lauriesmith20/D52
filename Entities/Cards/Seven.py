@@ -1,4 +1,4 @@
-from Entities.Card import BaseCard
+from Entities.card import BaseCard
 
 class Seven(BaseCard):
     def __init__(self, suit):

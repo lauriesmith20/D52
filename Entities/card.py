@@ -34,3 +34,6 @@ class BaseCard(object):
         pass
         return
     
+    def get_display_string(self, display_hand = False):
+
+        return self.value + self.suit if (self.flipped or display_hand) else 'xx'

@@ -1,7 +1,7 @@
 from Entities.Cards import ace, two, three, four, five, six, seven, eight, nine, ten, jack, queen, king
 from random import shuffle
 
-class DeckClass(object):
+class Deck(object):
 
     def __init__(self) -> None:
         self.cards = []
@@ -21,3 +21,19 @@ class DeckClass(object):
     def display(self):
         display_list = [c.value+c.suit for c in self.cards]
         print(display_list)
+
+    def deal_basecards(self, lane_list):
+        
+        for l in lane_list:
+            p1_card = self.cards.pop()
+            p2_card = self.cards.pop()
+            l.accept_basecards(p1_card, p2_card)
+
+    def deal_hand(self, p1, p2, handsize):
+
+        for i in range(handsize):
+            p1_card = self.cards.pop()
+            p2_card = self.cards.pop()
+            p1.hand.append(p1_card)
+            p2.hand.append(p2_card)
+        
