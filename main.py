@@ -1,6 +1,8 @@
-from Entities.Deck import DeckClass
+from Entities import game
 
-deck = DeckClass()
-deck.generate()
-deck.shuffle()
-deck.display()
+g = game.Game(handsize=5)
+
+g.setup()
+g.display_board()
+
+g.run_game()
