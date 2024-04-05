@@ -2,7 +2,8 @@ import random
 
 class Player(object):
 
-    def __init__(self, id) -> None:
+    def __init__(self, id, name) -> None:
+        self.name = name
         self.id = id
         self.hand = []
     
@@ -31,8 +32,11 @@ class Player(object):
             
             for card in lane.cards[self.id]:
                 
-                if not card.flipped():
+                if not card.flipped:
                     legal_moves['flip'].append((card, lane))
+                
+                if card.flipped:
+                    pass #Put Attacks in
                 
         return legal_moves
     
@@ -49,15 +53,26 @@ class Player(object):
         return move_type, move_params
 
 
-    def make_move(self, move_type, card, lane, enemy = None):
+    def make_move(self, move_type, card, lane = None, enemy = None):
 
         if move_type == 'place':
-            print('place')
+            self.place_card(card, lane)
         
         elif move_type == 'flip':
-            print('flip')
+            self.flip_card(card, lane)
         
         elif move_type == 'attack':
             print('attack')
 
-    
+    def place_card(self, card, lane):
+        
+        self.hand.remove(card)
+        lane.cards[self.id].append(card)
+
+        print(f'{self.name} placed a card in lane {lane.id}')
+
+    def flip_card(self, card, lane):
+        
+        card.flipped = True
+
+        print(f'{self.name} flipped a {card.value + card.suit} in lane {lane.id}')

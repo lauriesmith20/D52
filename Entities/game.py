@@ -3,8 +3,8 @@ from Entities import player, deck, card, lane
 class Game(object):
 
     def __init__(self, handsize) -> None:
-        self.p1 = player.Player(id=0)
-        self.p2 = player.Player(id=1)
+        self.p1 = player.Player(id=0, name = 'Laurie')
+        self.p2 = player.Player(id=1, name = 'Bot')
         self.l1 = lane.Lane(id=1)
         self.l2 = lane.Lane(id=2)
         self.l3 = lane.Lane(id=3)
@@ -33,7 +33,8 @@ class Game(object):
 
             self.begin_turn()
 
-            while self.moves_remaining > 0: 
+            while self.moves_remaining > 0:
+
                 legal_moves = self.active_player.gather_legal_moves(self.lane_list)
                 move_type, move_params = self.active_player.select_random_move(legal_moves)
                 self.active_player.make_move(move_type, *move_params)
@@ -50,6 +51,7 @@ class Game(object):
 
         self.moves_remaining = 3 
         self.game_over = True
+        self.display_board()
 
 
 
