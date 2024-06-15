@@ -59,13 +59,13 @@ class Player(object):
 
         return move_type, move_params
 
-    def make_move(self, move_type, card, lane=None, enemy=None):
+    def make_move(self, game, move_type, card, lane=None, enemy=None):
 
         if move_type == "place":
             self.place_card(card, lane)
 
         elif move_type == "flip":
-            self.flip_card(card, lane)
+            self.flip_card(game, card, lane)
 
         elif move_type == "attack":
             self.attack(card, lane, enemy)
@@ -77,9 +77,9 @@ class Player(object):
 
         self.display_message(f"{self.name} placed a card in lane {lane.id}")
 
-    def flip_card(self, card, lane):
+    def flip_card(self, game, card, lane):
 
-        card.flip(lane, self.id)
+        card.flip(game, lane, self)
 
         self.display_message(f"{self.name} flipped a {card.get_display_string()} in lane {lane.id}")
 

@@ -54,7 +54,7 @@ class Game(object):
         move_type, move_params = self.active_player.select_random_move(legal_moves)
 
         if move_type and move_params:
-            self.active_player.make_move(move_type, *move_params)
+            self.active_player.make_move(self, move_type, *move_params)
             self.moves_remaining -= 1
         else:
             self.moves_remaining = 0

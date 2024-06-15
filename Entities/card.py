@@ -8,18 +8,18 @@ class BaseCard(object):
         self.flipped = False
         self.value = None if not self.value else self.value
 
-    def flip(self, lane, player):
+    def flip(self, game, lane, player):
         if not self.flipped:
             self.flipped = True
         else:
-            raise E.CardAlreadyFlipped(self)
+            raise E.CardAlreadyFlippedError(self)
 
 
     def attack(self, lane, enemy):
         if self.flipped:
             result = enemy.get_attacked(lane, self)
         else:
-            raise E.UnflippedCardAttack(self)
+            raise E.UnflippedCardAttackError(self)
 
         return result
 

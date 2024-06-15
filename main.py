@@ -1,7 +1,7 @@
 from Entities import game
 
 wins = [0, 0]
-for i in range(1):
+for i in range(10):
     g = game.Game(handsize = 5, no_to_burn = 10, display = False)
     g.setup()
     winner = g.run_game()
