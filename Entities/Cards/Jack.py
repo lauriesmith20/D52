@@ -4,3 +4,7 @@ class Jack(BaseCard):
     def __init__(self, suit):
         self.value = 'J'
         super().__init__(suit)
+    
+    def flip(self):
+        self.health += 1
+        self.max_health = 3

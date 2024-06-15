@@ -1,7 +1,10 @@
 from Entities import game
 
-g = game.Game(handsize=5)
+wins = [0, 0]
+for i in range(1):
+    g = game.Game(handsize = 5, no_to_burn = 10, display = False)
+    g.setup()
+    winner = g.run_game()
+    wins[winner.id] += 1
 
-g.setup()
-
-g.run_game()
+print(f'\nOVERALL WINNER: {"P1" if wins[0] > wins[1] else "P2"} ({wins})')

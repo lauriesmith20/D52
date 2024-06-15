@@ -36,4 +36,8 @@ class Deck(object):
             p2_card = self.cards.pop()
             p1.hand.append(p1_card)
             p2.hand.append(p2_card)
-        
+    
+    def burn_cards(self, count):
+
+        for i in range(count):
+            self.cards.pop()

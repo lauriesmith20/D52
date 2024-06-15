@@ -4,36 +4,42 @@ class BaseCard(object):
 
     def __init__(self, suit):
         self.suit = suit
-        self.health = 2
+        self.health = self.max_health = 2
         self.flipped = False
+        self.value = None if not self.value else self.value
 
-    def flip(self):
+    def flip(self, lane, player):
         if not self.flipped:
             self.flipped = True
         else:
             raise E.CardAlreadyFlipped(self)
 
 
-    def attack(self, defender):
+    def attack(self, lane, enemy):
         if self.flipped:
-            defender.get_attacked(self)
+            result = enemy.get_attacked(lane, self)
         else:
             raise E.UnflippedCardAttack(self)
 
-    def get_attacked(self, attacker):
+        return result
+
+    def get_attacked(self, lane, attacker):
         self.health -= 1
         
-        if self.health == 1:
-            pass
+        if self.health > 0:
+            result = 'Damaged'
         if self.health == 0:
-            self.die()
+            result = 'Killed'
+            self.die(lane)
         
-        return
+        return result
 
-    def die(self):
-        pass
+    def die(self, lane):
+        for cardlist in lane.cards:
+            if self in cardlist:
+                cardlist.remove(self)
         return
     
     def get_display_string(self, display_hand = False):
 
-        return self.value + self.suit if (self.flipped or display_hand) else 'xx'
+        return f'{self.value}{self.suit}{self.health}' if (self.flipped or display_hand) else f'xx{self.health}'
