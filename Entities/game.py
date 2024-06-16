@@ -75,7 +75,9 @@ class Game(object):
 
         self.moves_remaining = 3 
         self.display_board()
+        self.reset_cards()
         self.switch_player()
+
         if self.display:
             print('================================================================')
 
@@ -121,11 +123,18 @@ class Game(object):
             self.moves_remaining = 0
             self.winner = self.inactive_player
             print(f'ULTRA RARE WIN')
-            raise IndexError
     
     def end_game(self):
         self.display_board()
         print(f'GAME OVER! {self.winner.name} wins')
+
+    def reset_cards(self):
+        for lane in self.lane_list:
+            for card in lane.cards[self.active_player.id]:
+                card.frozen = False
+                card.no_of_attacks = 1
+                
+
 
 
             

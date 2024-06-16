@@ -8,22 +8,29 @@ class BaseCard(object):
         self.flipped = False
         self.value = None if not self.value else self.value
 
+        self.no_of_attacks = 1
+        self.frozen = False
+
     def flip(self, game, lane, player):
         if not self.flipped:
             self.flipped = True
         else:
             raise E.CardAlreadyFlippedError(self)
 
+        self.activate_power(game, lane, player)
 
-    def attack(self, lane, enemy):
+
+    def attack(self, lane, enemy, by_eight=False):
+        self.no_of_attacks -= 1
+
         if self.flipped:
-            result = enemy.get_attacked(lane, self)
+            result = enemy.get_attacked(lane, self, by_eight)
         else:
             raise E.UnflippedCardAttackError(self)
 
         return result
 
-    def get_attacked(self, lane, attacker):
+    def get_attacked(self, lane, attacker, by_eight=False):
         self.health -= 1
         
         if self.health > 0:
@@ -39,6 +46,9 @@ class BaseCard(object):
             if self in cardlist:
                 cardlist.remove(self)
         return
+
+    def activate_power(self, game, lane, player):
+        pass
     
     def get_display_string(self, display_hand = False):
 

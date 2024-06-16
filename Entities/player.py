@@ -32,10 +32,10 @@ class Player(object):
 
             for card in lane.cards[self.id]:
 
-                if not card.flipped:
+                if not card.flipped and not card.frozen:
                     legal_moves["flip"].append((card, lane))
 
-                if card.flipped:
+                if card.flipped and card.no_of_attacks > 0 and not card.frozen:
                     for enemy in lane.cards[abs(self.id - 1)]:
                         legal_moves["attack"].append((card, lane, enemy))
 

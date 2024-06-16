@@ -7,7 +7,7 @@ class Three(BaseCard):
     
     def die(self, lane):
         if not self.flipped:
-            print('3 SELF REVIVES')
+            #print('3 SELF REVIVES')
             self.flipped = True
             self.health = 2
             return

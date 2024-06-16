@@ -5,6 +5,7 @@ class Deck(object):
 
     def __init__(self) -> None:
         self.cards = []
+        self.all_cards = []
 
     def generate(self):
         suits = ['H', 'D', 'S', 'C']
@@ -14,6 +15,7 @@ class Deck(object):
             for v in values:
                 new_card = v(s)
                 self.cards.append(new_card)
+                self.all_cards.append(new_card)
     
     def shuffle(self):
         shuffle(self.cards)
