@@ -10,7 +10,7 @@ class Queen(BaseCard):
         card_moves = [(None, None)]
 
         for l in game.lane_list:
-            if l != lane:
+            if l != lane and not l.won:
                 for card in l.cards[player.id]:
                     card_moves.append((card, l))
         

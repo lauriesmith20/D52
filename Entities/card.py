@@ -32,11 +32,14 @@ class BaseCard(object):
 
     def get_attacked(self, lane, attacker, by_eight=False):
         self.health -= 1
-        
+
         if self.health > 0:
             result = 'Damaged'
         if self.health == 0:
             result = 'Killed'
+            self.die(lane)
+        if self.value == '10' and self.health < 0:
+            result = None
             self.die(lane)
         
         return result

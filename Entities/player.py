@@ -1,4 +1,5 @@
 import random
+from Entities.Cards.jack import Jack
 
 
 class Player(object):
@@ -30,14 +31,15 @@ class Player(object):
             for card in self.hand:
                 legal_moves["place"].append((card, lane))
 
+            jack_in_lane = any(isinstance(_ , Jack) for _ in lane.cards[abs(self.id-1)])
+
             for card in lane.cards[self.id]:
 
                 if not card.flipped and not card.frozen:
                     legal_moves["flip"].append((card, lane))
 
-                if card.flipped and card.no_of_attacks > 0 and not card.frozen:
-                    for enemy in lane.cards[abs(self.id - 1)]:
-                        legal_moves["attack"].append((card, lane, enemy))
+                self.gather_attacks(card, lane, jack_in_lane, legal_moves)
+                
 
         return legal_moves
 
@@ -84,31 +86,77 @@ class Player(object):
         self.display_message(f"{self.name} flipped a {card.get_display_string()} in lane {lane.id}")
 
     def attack(self, card, lane, enemy):
-        
-        result = card.attack(lane, enemy)
-        self.display_message(
-            f"""{self.name} {result} a {enemy.get_display_string()} in lane {lane.id} using {card.get_display_string()}"""
-        )
+        for e in enemy:
+            result = card.attack(lane, e)
+            self.display_message(
+                f"""{self.name} {result} a {e.get_display_string()} in lane {lane.id} using {card.get_display_string()}"""
+            )
     
     def discard_one(self):
         card = self.hand.pop(random.randint(0, len(self.hand)-1))
-        print(f'{self.name} discarded a card ({card.value})')
+        self.display_message(f'{self.name} discarded a card ({card.value})')
     
     def select_card_move(self, player, moves, to_lane):
         card, from_lane = random.choice(moves)
         if not card and not from_lane:
-            print('NO 3 MOVE CHOSEN')
             return
         
-        from_lane.display()
-        to_lane.display()
-        print(f'Moving {card.value + card.suit} from {from_lane.id} to {to_lane.id}')
+        #from_lane.display()
+        #to_lane.display()
         from_lane.cards[player.id].remove(card)
         to_lane.cards[player.id].append(card)
-        from_lane.display()
-        to_lane.display()
+        #from_lane.display()
+        #to_lane.display()
+        self.display_message(f'{player.name} moved a {card.value+card.suit} from Lane {from_lane.id} to Lane {to_lane.id}')
 
     def display_message(self, message):
         if self.display:
             print(message)
 
+    def gather_attacks(self, card, lane, jack_in_lane, legal_moves):
+
+        if card.flipped and card.no_of_attacks > 0 and not card.frozen:
+
+            if card.value == '10':  # 10s can make multiple attacks under certain circumstances
+                self.gather_ten_attacks(card, lane, jack_in_lane, legal_moves)
+                return
+            
+            for enemy in lane.cards[abs(self.id - 1)]:
+                legal = self.check_attack_legality(card, enemy, jack_in_lane)
+                if legal:
+                    legal_moves["attack"].append((card, lane, [enemy]))
+
+            return
+
+    def check_attack_legality(self, card, enemy, jack_in_lane):
+
+        if not enemy.flipped:
+            return True
+
+        if card.value == '10' and enemy.value in ['Q', 'K', 'A']:
+            return False
+        
+        if jack_in_lane and enemy.value != 'J':
+            return False
+        
+        return True
+    
+    def gather_ten_attacks(self, ten, lane, jack_in_lane, legal_moves):
+        for enemy in lane.cards[abs(self.id - 1)]:
+            if enemy.value in ['9', 'J']:
+                legal = self.check_attack_legality(ten, enemy, jack_in_lane)
+                if legal:
+                    legal_moves["attack"].append((ten, lane, [enemy]))
+                continue
+            
+            for enemy_two in lane.cards[abs(self.id - 1)]:
+                if enemy == enemy_two or enemy_two.value in ['9', 'J']:
+                    continue
+
+                legal = self.check_attack_legality(ten, enemy, jack_in_lane)
+                legal = self.check_attack_legality(ten, enemy_two, jack_in_lane) and legal
+                if legal:
+                    legal_moves["attack"].append((ten, lane, [enemy, enemy_two]))
+
+
+        

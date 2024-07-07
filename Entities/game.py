@@ -1,4 +1,4 @@
-from Entities import player, deck, card, lane
+from Entities import player, deck, lane
 
 class Game(object):
 

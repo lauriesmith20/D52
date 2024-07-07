@@ -1,8 +1,8 @@
 from Entities import game
 
 wins = [0, 0]
-for i in range(100):
-    g = game.Game(handsize = 5, no_to_burn = 10, display = False)
+for i in range(1):
+    g = game.Game(handsize = 5, no_to_burn = 10, display = True)
     g.setup()
     winner = g.run_game()
     wins[winner.id] += 1
