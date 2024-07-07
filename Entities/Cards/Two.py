@@ -7,6 +7,12 @@ class Two(BaseCard):
     
     def activate_power(self, game, lane, player):
         if not game.endgame:
-            player.pickup_card(game.deck)
-            player.discard_one()
+            if game.deck.cards:
+                player.pickup_card(game.deck)
+                player.discard_one()
+            
+            else:
+                print('Deck empty. Skipping 2 power.')
+
         
+            
