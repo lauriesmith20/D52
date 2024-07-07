@@ -90,6 +90,24 @@ class Player(object):
             f"""{self.name} {result} a {enemy.get_display_string()} in lane {lane.id} using {card.get_display_string()}"""
         )
     
+    def discard_one(self):
+        card = self.hand.pop(random.randint(0, len(self.hand)-1))
+        print(f'{self.name} discarded a card ({card.value})')
+    
+    def select_card_move(self, player, moves, to_lane):
+        card, from_lane = random.choice(moves)
+        if not card and not from_lane:
+            print('NO 3 MOVE CHOSEN')
+            return
+        
+        from_lane.display()
+        to_lane.display()
+        print(f'Moving {card.value + card.suit} from {from_lane.id} to {to_lane.id}')
+        from_lane.cards[player.id].remove(card)
+        to_lane.cards[player.id].append(card)
+        from_lane.display()
+        to_lane.display()
+
     def display_message(self, message):
         if self.display:
             print(message)

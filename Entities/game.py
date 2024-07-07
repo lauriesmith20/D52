@@ -61,7 +61,7 @@ class Game(object):
 
     def begin_turn(self):
 
-        if not self.endgame:
+        if not self.endgame and self.deck.cards:
             self.active_player.pickup_card(self.deck)
 
         if not self.deck.cards and not self.endgame:
