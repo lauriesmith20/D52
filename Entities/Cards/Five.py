@@ -7,7 +7,7 @@ class Five(BaseCard):
         super().__init__(suit)
         
     def activate_power(self, game, lane, player):
-        print('5 FLIPS ALL')
+        #print('5 FLIPS ALL')
         for card in lane.cards[player.id]:
             try:
                 card.flip(game, lane, player)

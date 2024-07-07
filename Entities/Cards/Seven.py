@@ -8,6 +8,6 @@ class Seven(BaseCard):
         
 
     def activate_power(self, game, lane, player):
-        print('7 HEALS ALL')
+        #print('7 HEALS ALL')
         for card in lane.cards[player.id]:
             card.health = card.max_health
